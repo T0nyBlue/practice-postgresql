@@ -1,10 +1,9 @@
 use actix_web::{web, HttpResponse, Responder};
 
-use crate::models::user_model::{User, CreateUser, UpdateUser};
+use crate::models::user_model::{User, UpdateUser, CreateUser};
 use crate::utils::auth_utils::hash_password;
 use crate::AppState;
 
-// use sqlx::PgPool;
 use uuid::Uuid;
 use chrono::Utc;
 
@@ -53,7 +52,7 @@ async fn create_user(state: web::Data<AppState>, user: web::Json<CreateUser>) ->
     let id = Uuid::new_v4();
     let created_and_updated_at = Utc::now();
     let hashed_password: String = hash_password(&user.password.as_str()).unwrap();
-    
+
     match sqlx::query_as::<_,User>("INSERT INTO end_user (id, username, email, first_name, middle_name, last_name, password, created_at, updated_at, status) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *")
         .bind(id)
         .bind(user.username.clone())
