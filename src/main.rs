@@ -1,6 +1,7 @@
 mod handlers;
 mod models;
 mod utils;
+mod services;
 
 use actix_web::{web::Data, App, HttpServer};
 use dotenv::dotenv;
